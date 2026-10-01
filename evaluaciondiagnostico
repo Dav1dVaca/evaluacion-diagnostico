@@ -1,0 +1,84 @@
+package main
+
+import "fmt"
+
+var productosVendidos []string
+var subtotales []float64
+var contador int
+
+func RegistrarVenta(nombre string, precio float64, cantidad int) {
+	subtotal := precio * float64(cantidad)
+
+	productosVendidos[contador] = nombre
+	subtotales[contador] = subtotal
+	contador++
+
+	fmt.Println("Venta registrada:")
+	fmt.Println("Producto:", nombre)
+	fmt.Println("Cantidad:", cantidad)
+	fmt.Printf("Subtotal: $%.2f\n", subtotal)
+}
+
+func main() {
+	productos := [3]string{"Arroz", "Leche", "Pan"}
+	precios := [3]float64{1.25, 0.95, 0.50}
+
+	for {
+		var opcion int
+
+		fmt.Println("\n===== MENU =====")
+		fmt.Println("1. Registrar nueva venta")
+		fmt.Println("2. Mostrar estadisticas")
+		fmt.Println("3. Salir")
+		fmt.Print("Seleccione una opcion: ")
+		fmt.Scan(&opcion)
+
+		switch opcion {
+
+		case 1:
+			fmt.Println("\nProductos disponibles:")
+			fmt.Println("1 - Arroz - $1.25")
+			fmt.Println("2 - Leche - $0.95")
+			fmt.Println("3 - Pan - $0.50")
+
+			var numeroProducto int
+			fmt.Print("Seleccione un producto: ")
+			fmt.Scan(&numeroProducto)
+
+			if numeroProducto < 1 || numeroProducto > 3 {
+				fmt.Println("Producto no valido.")
+				continue
+			}
+
+			var cantidad int
+			fmt.Print("Ingrese la cantidad vendida: ")
+			fmt.Scan(&cantidad)
+
+			RegistrarVenta(
+				productos[numeroProducto-1],
+				precios[numeroProducto-1],
+				cantidad,
+			)
+
+		case 2:
+			if contador == 0 {
+				fmt.Println("No existen ventas registradas.")
+			} else {
+				var total float64
+
+				for i := 0; i < contador; i++ {
+					total += subtotales[i]
+				}
+
+				fmt.Printf("Total recaudado: $%.2f\n", total)
+			}
+
+		case 3:
+			fmt.Println("Programa finalizado.")
+			return
+
+		default:
+			fmt.Println("Opcion no valida.")
+		}
+	}
+}
